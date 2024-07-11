@@ -30,8 +30,34 @@ function Process-LogEntry {
         $message += "Port Count: $($ipPortMap[$srcIP].Keys.Count)`n"
 
         # Send the alert message to Telegram
-        Send-TelegramMessage -botToken $botToken -chatID $chatID -message $message                
+        Send-TelegramMessage -botToken $botToken -chatID $chatID -message $message
     }
 }
 
-Export-ModuleMember -Function Process-LogEntry
+function Track-LoginEvents {
+    param (
+        [string[]]$logEntry,
+        [string]$botToken,
+        [string]$chatID
+    )
+
+    # Extract relevant fields from the log entry
+    $eventID = $logEntry[0]
+    $accountName = $logEntry[1]
+    $accountDomain = $logEntry[2]
+    $loginID = $logEntry[3]
+
+    # Check for event ID 4672 (admin logins) or 4624 (successful logins)
+    if ($eventID -eq 4672 -or $eventID -eq 4624) {
+        $message = "Login Alert:`n"
+        $message += "Event ID: $eventID`n"
+        $message += "Account Name: $accountName`n"
+        $message += "Account Domain: $accountDomain`n"
+        $message += "Login ID: $loginID`n"
+
+        # Send the alert message to Telegram
+        Send-TelegramMessage -botToken $botToken -chatID $chatID -message $message
+    }
+}
+
+Export-ModuleMember -Function Process-LogEntry, Track-LoginEvents
