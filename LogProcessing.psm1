@@ -30,7 +30,7 @@ function Process-LogEntry {
         $message += "Port Count: $($ipPortMap[$srcIP].Keys.Count)`n"
 
         # Send the alert message to Telegram
-        Send-TelegramMessage -botToken $botToken -chatID $chatID -message $message                 ## replace the bottoken & chatID  with yours
+        Send-TelegramMessage -botToken $botToken -chatID $chatID -message $message                
     }
 }
 
