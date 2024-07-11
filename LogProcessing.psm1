@@ -1,4 +1,3 @@
-
 function Process-LogEntry {
     param (
         [string[]]$logEntry,
@@ -46,6 +45,8 @@ function Track-LoginEvents {
     $accountName = $logEntry[1]
     $accountDomain = $logEntry[2]
     $loginID = $logEntry[3]
+    $processID = $logEntry[4]
+    $processName = $logEntry[5]
 
     # Check for event ID 4672 (admin logins) or 4624 (successful logins)
     if ($eventID -eq 4672 -or $eventID -eq 4624) {
@@ -54,6 +55,8 @@ function Track-LoginEvents {
         $message += "Account Name: $accountName`n"
         $message += "Account Domain: $accountDomain`n"
         $message += "Login ID: $loginID`n"
+        $message += "Process ID: $processID`n"
+        $message += "Process Name: $processName`n"
 
         # Send the alert message to Telegram
         Send-TelegramMessage -botToken $botToken -chatID $chatID -message $message
