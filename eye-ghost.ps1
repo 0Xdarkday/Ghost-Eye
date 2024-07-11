@@ -14,6 +14,7 @@ try {
     Get-Content -Path $logFile | ForEach-Object {
         $logEntry = $_ -split ' '
         Process-LogEntry -logEntry $logEntry -ipPortMap $ipPortMap -botToken $botToken -chatID $chatID
+        Track-LoginEvents -logEntry $logEntry -botToken $botToken -chatID $chatID
     }
 } catch {
     Write-Error "Failed to read or process the log file: $_"
