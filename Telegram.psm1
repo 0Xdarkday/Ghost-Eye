@@ -1,12 +1,10 @@
-
 function Send-TelegramMessage {
     param (
         [string]$botToken,
         [string]$chatID,
         [string]$message
     )
-    
-    
+
     if (-not $botToken) {
         throw "Bot token is required."
     }
@@ -21,9 +19,9 @@ function Send-TelegramMessage {
         text = $message
     }
 
-    # Send the message to Telegram using an HTTP POST request
     try {
-        Invoke-RestMethod -Uri $url -Method Post -ContentType "application/json" -Body ($params | ConvertTo-Json)
+        $response = Invoke-RestMethod -Uri $url -Method Post -ContentType "application/json" -Body ($params | ConvertTo-Json)
+        Write-Output "Message sent successfully: $response"
     } catch {
         Write-Error "Failed to send message to Telegram: $_"
     }
