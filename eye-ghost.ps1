@@ -1,6 +1,7 @@
 # Import necessary modules
 Import-Module -Name "$PSScriptRoot\Telegram.psm1"
 Import-Module -Name "$PSScriptRoot\LogProcessing.psm1"
+Import-Module -Name "$PSScriptRoot\RegistryMonitoring.psm1"
 
 # Load configuration
 . "$PSScriptRoot\config.ps1"
@@ -8,7 +9,6 @@ Import-Module -Name "$PSScriptRoot\LogProcessing.psm1"
 # Initialize an empty hash table to store IP-port mappings
 $ipPortMap = @{}
 
-# Read and process the generic log file (if exists)
 if (Test-Path $logFile) {
     try {
         Write-Output "Reading log file: $logFile"
@@ -23,5 +23,5 @@ if (Test-Path $logFile) {
     Write-Error "Log file not found: $logFile"
 }
 
-# Start tracking successful logins
 Track-SuccessfulLogins -botToken $botToken -chatID $chatID
+Start-RegistryMonitor -botToken $botToken -chatID $chatID -keyPath "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
