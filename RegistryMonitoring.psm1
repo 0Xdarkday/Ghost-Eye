@@ -13,11 +13,9 @@ function Start-RegistryMonitor {
         $query.WithinInterval = "00:00:01"
         $query.Condition = $filter.QueryString
 
-        
         $watcher = New-Object System.Management.ManagementEventWatcher
         $watcher.Query = $query
 
-        
         $watcher.Start() | Out-Null
         Write-Log "Started monitoring registry key: $keyPath"
 
@@ -41,7 +39,6 @@ function Start-RegistryMonitor {
         Write-Log "Error starting registry monitor: $_" -level "ERROR"
     }
 }
-
 
 function Write-Log {
     param (
