@@ -11,6 +11,7 @@ $ipPortMap = @{}
 # Read and process the generic log file (if exists)
 if (Test-Path $logFile) {
     try {
+        Write-Output "Reading log file: $logFile"
         Get-Content -Path $logFile | ForEach-Object {
             $logEntry = $_ -split ' '
             Process-LogEntry -logEntry $logEntry -ipPortMap $ipPortMap -botToken $botToken -chatID $chatID
@@ -18,16 +19,9 @@ if (Test-Path $logFile) {
     } catch {
         Write-Error "Failed to read or process the log file: $_"
     }
+} else {
+    Write-Error "Log file not found: $logFile"
 }
 
-# Define the event IDs to track
-$eventIDs = @(4672, 4624)
-
-# Read and process the Windows event log
-try {
-    Get-WinEvent -FilterHashtable @{LogName='Security'; Id=$eventIDs} | ForEach-Object {
-        Track-LoginEvents -eventRecord $_ -botToken $botToken -chatID $chatID
-    }
-} catch {
-    Write-Error "Failed to read or process the event log: $_"
-}
+# Start tracking successful logins
+Track-SuccessfulLogins -botToken $botToken -chatID $chatID
