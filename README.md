@@ -11,8 +11,7 @@ welcome to Ghost Eye is a multi-functional PowerShell tool designed for cybersec
    - Detect active scan that occured on Network with alertion such as src & dest ip and dest port and  count
 - **Real-time Registry Monitoring**
   - monitoring registry keys for changes and send alerts when modifications are detecte
-  
--**Data Collection for SIEM**
+- **Data Collection for SIEM**
    -Collects various system and security-related data, exporting it to CSV format for easy import into Security Information and Event Management (SIEM) systems.
 - **Event-Based Monitoring**
    -Monitors Windows Event Log for specific security-related events such as successful logins, admin logins, new process creations, and PowerShell script executions.
