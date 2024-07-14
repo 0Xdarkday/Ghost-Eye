@@ -1,12 +1,12 @@
-# Function to track specific event IDs and send alerts to Telegram
 function Track-SuccessfulLogins {
     param (
         [string]$botToken,
-        [string]$chatID
+        [string]$chatID,
+        [int]$iterations, # Default to 1 iteration
+        [int]$interval  # Default to 10 seconds interval
     )
 
-    
-    while ($true) {
+    for ($i = 0; $i -lt $iterations; $i++) {
         try {
             # Get the latest Event ID 4624 (successful logins)
             $event4624 = Get-WinEvent -FilterHashtable @{LogName='Security'; ID=4624} -MaxEvents 1
@@ -38,15 +38,15 @@ function Track-SuccessfulLogins {
                 Process-PSEvent4104 -eventRecord $event4104 -botToken $botToken -chatID $chatID
             }
 
-
-            Start-Sleep -Seconds 1500
+            # Pause for the specified interval before checking again
+            Start-Sleep -Seconds $interval
         } catch {
             Write-Error "Error tracking logins: $_"
         }
     }
 }
 
-
+# Function to process Event ID 4624 and send message to Telegram
 function Process-Event4624 {
     param (
         [System.Object]$eventRecord,
@@ -57,7 +57,7 @@ function Process-Event4624 {
     Write-Output "Processing Event ID 4624: $($eventRecord.Id)"
 
     try {
-       
+        # Extract relevant fields from the event record
         $eventID = $eventRecord.Id
         $timeCreated = $eventRecord.TimeCreated
         $subjectSecurityID = ($eventRecord.Properties[0]).Value
@@ -75,7 +75,7 @@ function Process-Event4624 {
 
         Write-Output "Event ID: $eventID, Time Created: $timeCreated, Subject Account Name: $subjectAccountName, Subject Account Domain: $subjectAccountDomain, New Logon Account Name: $newLogonAccountName, New Logon Account Domain: $newLogonAccountDomain, Logon Type: $logonTypeDescription"
 
-        
+        # Prepare the message to send to Telegram
         $message = "Login Alert: "
         $message += "Event ID: $eventID, "
         $message += "Time Created: $timeCreated, "
@@ -91,14 +91,14 @@ function Process-Event4624 {
         $message += "Process ID: $processID, "
         $message += "Process Name: $processName"
 
-        
+        # Send the alert message to Telegram
         Send-TelegramMessage -botToken $botToken -chatID $chatID -message $message
     } catch {
         Write-Error "Failed to process event record: $_"
     }
 }
 
-
+# Function to process Event ID 4672 and send message to Telegram
 function Process-Event4672 {
     param (
         [System.Object]$eventRecord,
@@ -109,7 +109,7 @@ function Process-Event4672 {
     Write-Output "Processing Event ID 4672: $($eventRecord.Id)"
 
     try {
-      
+        # Extract relevant fields from the event record
         $eventID = $eventRecord.Id
         $timeCreated = $eventRecord.TimeCreated
         $securityID = ($eventRecord.Properties[0]).Value
@@ -119,7 +119,7 @@ function Process-Event4672 {
 
         Write-Output "Event ID: $eventID, Time Created: $timeCreated, Security ID: $securityID, Account Name: $accountName, Account Domain: $accountDomain, Logon ID: $logonID"
 
-       
+        # Prepare the message to send to Telegram
         $message = "Admin Login Alert: "
         $message += "Event ID: $eventID, "
         $message += "Time Created: $timeCreated, "
@@ -128,14 +128,14 @@ function Process-Event4672 {
         $message += "Account Domain: $accountDomain, "
         $message += "Logon ID: $logonID"
 
-        
+        # Send the alert message to Telegram
         Send-TelegramMessage -botToken $botToken -chatID $chatID -message $message
     } catch {
         Write-Error "Failed to process event record: $_"
     }
 }
 
-
+# Function to process Event ID 4688 and send message to Telegram
 function Process-Event4688 {
     param (
         [System.Object]$eventRecord,
@@ -146,7 +146,7 @@ function Process-Event4688 {
     Write-Output "Processing Event ID 4688: $($eventRecord.Id)"
 
     try {
-      
+        # Extract relevant fields from the event record
         $eventID = $eventRecord.Id
         $timeCreated = $eventRecord.TimeCreated
         $newProcessID = ($eventRecord.Properties[4]).Value
@@ -160,7 +160,7 @@ function Process-Event4688 {
 
         Write-Output "Event ID: $eventID, Time Created: $timeCreated, New Process ID: $newProcessID, New Process Name: $newProcessName, Security ID: $securityID, Account Name: $accountName, Account Domain: $accountDomain, Logon ID: $logonID, Creator Process ID: $creatorProcessID, Creator Process Name: $creatorProcessName"
 
-        
+        # Prepare the message to send to Telegram
         $message = "New Process Creation Alert: "
         $message += "Event ID: $eventID, "
         $message += "Time Created: $timeCreated, "
@@ -173,14 +173,14 @@ function Process-Event4688 {
         $message += "Creator Process ID: $creatorProcessID, "
         $message += "Creator Process Name: $creatorProcessName"
 
-       
+        # Send the alert message to Telegram
         Send-TelegramMessage -botToken $botToken -chatID $chatID -message $message
     } catch {
         Write-Error "Failed to process event record: $_"
     }
 }
 
-
+# Function to process PowerShell Event ID 4103 and send message to Telegram
 function Process-PSEvent4103 {
     param (
         [System.Object]$eventRecord,
@@ -191,7 +191,7 @@ function Process-PSEvent4103 {
     Write-Output "Processing PowerShell Event ID 4103: $($eventRecord.Id)"
 
     try {
-       
+        # Extract relevant fields from the event record
         $eventID = $eventRecord.Id
         $timeCreated = $eventRecord.TimeCreated
         $scriptName = ($eventRecord.Properties[0]).Value
@@ -199,21 +199,21 @@ function Process-PSEvent4103 {
 
         Write-Output "Event ID: $eventID, Time Created: $timeCreated, Script Name: $scriptName, Command: $command"
 
-        
+        # Prepare the message to send to Telegram
         $message = "PowerShell Module Load Alert: "
         $message += "Event ID: $eventID, "
         $message += "Time Created: $timeCreated, "
         $message += "Script Name: $scriptName, "
         $message += "Command: $command"
 
-       
+        # Send the alert message to Telegram
         Send-TelegramMessage -botToken $botToken -chatID $chatID -message $message
     } catch {
         Write-Error "Failed to process event record: $_"
     }
 }
 
-
+# Function to process PowerShell Event ID 4104 and send message to Telegram
 function Process-PSEvent4104 {
     param (
         [System.Object]$eventRecord,
@@ -224,27 +224,27 @@ function Process-PSEvent4104 {
     Write-Output "Processing PowerShell Event ID 4104: $($eventRecord.Id)"
 
     try {
-       
+        # Extract relevant fields from the event record
         $eventID = $eventRecord.Id
         $timeCreated = $eventRecord.TimeCreated
         $scriptBlock = ($eventRecord.Properties[0]).Value
 
         Write-Output "Event ID: $eventID, Time Created: $timeCreated, Script Block: $scriptBlock"
 
-        
+        # Prepare the message to send to Telegram
         $message = "PowerShell Script Block Logging Alert: "
         $message += "Event ID: $eventID, "
         $message += "Time Created: $timeCreated, "
         $message += "Script Block: $scriptBlock"
 
-       
+        # Send the alert message to Telegram
         Send-TelegramMessage -botToken $botToken -chatID $chatID -message $message
     } catch {
         Write-Error "Failed to process event record: $_"
     }
 }
 
-
+# Function to get logon type description
 function Get-LogonTypeDescription {
     param (
         [int]$logonType
@@ -264,6 +264,7 @@ function Get-LogonTypeDescription {
     }
 }
 
+# Function to process log entry and detect possible scan activity
 function Process-LogEntry {
     param (
         [string[]]$logEntry,
@@ -299,6 +300,6 @@ function Process-LogEntry {
     }
 }
 
-
+# Exporting module members
 Export-ModuleMember -Function Track-SuccessfulLogins, Process-Event4624, Process-Event4672, Process-Event4688,Process-PSEvent4103,Process-PSEvent4104, Process-LogEntry
 
