@@ -1,4 +1,4 @@
-# Ghost Eye - Advanced Attack Detection Tool
+# Ghost Eye - Advanced Attacks Detection Tool
 
 ## Introduction
 
@@ -8,6 +8,8 @@ welcome to Ghost Eye is a PowerShell tool designed to monitor specific Windows e
  Ghost Eye is equipped to detect a wide array of aims, including but not limited to:
  
 - **Detect Active Scan**
+- **Real-time Registry Monitoring**
+- **Event-Based Monitoring**
 - **Track Security Event Logs**
    - Event ID 4624: Successful logons.
    - Event ID 4672: Special privileges assigned to new logons (administrative logons).
@@ -35,5 +37,7 @@ Get started with Ghost Eye by following these steps:
 git clone https://github.com/yourusername/Ghost-Eye.git
 cd Ghost-Eye
 ```
+## Example usages
+  ```sh
 
    
