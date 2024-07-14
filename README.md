@@ -2,14 +2,19 @@
 
 ## Introduction
 
-welcome to Ghost Eye is a PowerShell tool designed to monitor specific Windows event logs and send alerts to a specified Telegram chat. This tool can help administrators and security professionals stay informed about important system and security events in real-time.
+welcome to Ghost Eye is a multi-functional PowerShell tool designed for cybersecurity monitoring and incident response. It tracks specific event IDs, monitors registry changes, and sends alerts to a Telegram bot. Additionally, it collects and processes various system data useful for digital forensics and incident response (DFIR).
 
 ## Features
  Ghost Eye is equipped to detect a wide array of aims, including but not limited to:
  
 - **Detect Active Scan**
+   - Detect active scan that occured on Network with alertion such as src & dest ip and dest port and  count
 - **Real-time Registry Monitoring**
+   - monitoring registry keys for changes and send alerts when modifications are detecte
+-**Data Collection for SIEM**
+   -Collects various system and security-related data, exporting it to CSV format for easy import into Security Information and Event Management (SIEM) systems.
 - **Event-Based Monitoring**
+   -Monitors Windows Event Log for specific security-related events such as successful logins, admin logins, new process creations, and PowerShell script executions.
 - **Track Security Event Logs**
    - Event ID 4624: Successful logons.
    - Event ID 4672: Special privileges assigned to new logons (administrative logons).
