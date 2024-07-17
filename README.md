@@ -70,7 +70,7 @@ welcome to Ghost Eye is designed for system administrators and cybersecurity pro
 - Then Replace your bot token and chat ID within the Config.ps1 file
 
 ## Telegrm Dashboard
- - [Telegrm Dashboard](images/Dashbord.png)
+ ![Telegrm Dashboard](images/Dashbord.png)
 ## Installation
 Get started with Ghost Eye by following these steps:
 ```sh
