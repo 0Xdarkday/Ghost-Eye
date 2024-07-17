@@ -2,7 +2,7 @@
 
 ## Introduction
 
-welcome to Ghost Eye is a multi-functional PowerShell tool designed for cybersecurity monitoring and incident response. It tracks specific event IDs, monitors registry changes, and sends alerts to a Telegram bot. Additionally, it collects and processes various system data useful for digital forensics and incident response (DFIR).
+welcome to Ghost Eye is designed for system administrators and cybersecurity professionals to monitor and investigate system events, manage registry changes, and send notifications. The tool includes various scripts and modules to gather system information, track specific events, send alerts via Telegram, and convert investigation results into CSV files for easy analysis. it collects and processes various system data useful for digital forensics and incident response (DFIR).
 
 ## Features
  Ghost Eye is equipped to detect a wide array of aims, including but not limited to:
@@ -11,14 +11,15 @@ welcome to Ghost Eye is a multi-functional PowerShell tool designed for cybersec
    - Detect active scan that occured on Network with alertion such as src & dest ip and dest port and  count
 - **Real-time Registry Monitoring**
   - monitoring registry keys for changes and send alerts when modifications are detecte
-- **Data Collection for SIEM**
-   -Collects various system and security-related data, exporting it to CSV format for easy import into Security Information and Event Management (SIEM) systems.
+  - Sends alerts to your Telegram bot when changes are detected.
+  - Sends a notification if no changes are detected within a specified time.
 - **Event-Based Monitoring**
    -Monitors Windows Event Log for specific security-related events such as successful logins, admin logins, new process creations, and PowerShell script executions.
 - **Track Security Event Logs**
    - Event ID 4624: Successful logons.
    - Event ID 4672: Special privileges assigned to new logons (administrative logons).
    - Event ID 4688: New process creation.
+  
 - **System Investigation**
    - **Network Information**
       - Get-IPInfo: Retrieves information about the system's IP configuration.
@@ -47,7 +48,10 @@ welcome to Ghost Eye is a multi-functional PowerShell tool designed for cybersec
       - Get-ChromiumFiles: Lists files related to Chromium-based browsers.
    - **PowerShell History**
       - Get-PowershellHistoryCurrentUser: Retrieves PowerShell history for the current user.
-      - Get-PowershellConsoleHistory-AllUsers: Retrieves PowerShell console history for all users. 
+      - Get-PowershellConsoleHistory-AllUsers: Retrieves PowerShell console history for all users.
+   - **Data Collection for SIEM**
+      - Collects various system and security-related data, exporting it to CSV format for easy import into Security Information and Event Management (SIEM) systems.
+      
 - **Track PowerShell Events**
    - Event ID 4103: Module logging (PowerShell script module logging).
    - Event ID 4104: Script block logging (PowerShell script execution).
@@ -70,7 +74,30 @@ Get started with Ghost Eye by following these steps:
 git clone https://github.com/yourusername/Ghost-Eye.git
 cd Ghost-Eye
 ```
+## configuration
+```
+#shensure that path is defined in your windows for firewall log  
+$logFile = "C:\Windows\System32\LogFiles\Firewall\pfirewall.log"
+
+# replace the botToken & chatID  with yours
+$botToken = ""
+$chatID = ""
+
 ## Example usages
   ```sh
-
+./ghots-eye.ps1
+  ______   __                              __            ________                    
+ /      \ |  \                            |  \          |        \                   
+|  $$$$$$\| $$____    ______    _______  _| $$_         | $$$$$$$$__    __   ______  
+| $$ __\$$| $$    \  /      \  /       \|   $$ \ ______ | $$__   |  \  |  \ /      \ 
+| $$|    \| $$$$$$$\|  $$$$$$\|  $$$$$$$ \$$$$$$|      \| $$  \  | $$  | $$|  $$$$$$\
+| $$ \$$$$| $$  | $$| $$  | $$ \$$    \   | $$ __\$$$$$$| $$$$$  | $$  | $$| $$    $$
+| $$__| $$| $$  | $$| $$__/ $$ _\$$$$$$\  | $$|  \      | $$_____| $$__/ $$| $$$$$$$$
+ \$$    $$| $$  | $$ \$$    $$|       $$   \$$  $$      | $$     \\$$    $$ \$$     \
+  \$$$$$$  \$$   \$$  \$$$$$$  \$$$$$$$     \$$$$        \$$$$$$$$_\$$$$$$$  \$$$$$$$
+                                                                 |  \__| $$          
+                                                                  \$$    $$          
+                                                                   \$$$$$$   
+                                        Made by Mahmoud Shaker
+				                                	Welcome to Ghost-Eye investigator   
    
