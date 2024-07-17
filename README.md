@@ -68,6 +68,9 @@ welcome to Ghost Eye is designed for system administrators and cybersecurity pro
 - A Telegram bot token and chat ID to receive alerts. Follow the instructions here to create a bot and obtain the botToken and chatID
 - Well Replace your bot token and chat ID within the Config.ps1 file
 
+## Telegrm Dashboard
+ - [Telegrm Dashboard]()
+
 ## Installation
 Get started with Ghost Eye by following these steps:
 ```sh
