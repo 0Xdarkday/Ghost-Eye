@@ -224,7 +224,7 @@ function Process-PSEvent4104 {
     Write-Output "Processing PowerShell Event ID 4104: $($eventRecord.Id)"
 
     try {
-        # Extract relevant fields from the event record
+        
         $eventID = $eventRecord.Id
         $timeCreated = $eventRecord.TimeCreated
         $scriptBlock = ($eventRecord.Properties[0]).Value
@@ -295,11 +295,11 @@ function Process-LogEntry {
         $message += "Time: $($logEntry[0]) $($logEntry[1])`n"
         $message += "Port Count: $($ipPortMap[$srcIP].Keys.Count)`n"
 
-        # Send the alert message to Telegram
+        
         Send-TelegramMessage -botToken $botToken -chatID $chatID -message $message
     }
 }
 
-# Exporting module members
+
 Export-ModuleMember -Function Track-SuccessfulLogins, Process-Event4624, Process-Event4672, Process-Event4688,Process-PSEvent4103,Process-PSEvent4104, Process-LogEntry
 
