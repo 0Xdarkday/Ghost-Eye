@@ -1,4 +1,4 @@
-# Ghost Eye - Advanced Attacks Detection Tool
+# Ghost Eye - Advanced investigator Tool
 
 ## Introduction
 
