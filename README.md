@@ -46,6 +46,9 @@ welcome to Ghost Eye is designed for system administrators and cybersecurity pro
       - Get-ScheduledTasksRunInfo: Retrieves run information for scheduled tasks.
       - Get-ConnectedDevices: Lists connected devices.
       - Get-ChromiumFiles: Lists files related to Chromium-based browsers.
+      - Get-RecentFiles: Lists recently modified files.
+      - Get-InstalledSoftware: Lists all installed software on the system.
+      - Get-SystemInfo: Collects detailed system information.
    - **PowerShell History**
       - Get-PowershellHistoryCurrentUser: Retrieves PowerShell history for the current user.
       - Get-PowershellConsoleHistory-AllUsers: Retrieves PowerShell console history for all users.
