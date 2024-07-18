@@ -1,5 +1,5 @@
-# Ghost Eye - Advanced investigator Tool
-![Telegrm Dashboard](images/logo.png)
+# GHOST EYE - Advanced investigator Tool
+![GHOST EYE ](images/logo.png)
 ## Introduction
 
 welcome to Ghost Eye is designed for system administrators and cybersecurity professionals to monitor and investigate system events, manage registry changes, and send notifications. The tool includes various scripts and modules to gather system information, track specific events, send alerts via Telegram, and convert investigation results into CSV files for easy analysis. it collects and processes various system data useful for digital forensics and incident response (DFIR).
