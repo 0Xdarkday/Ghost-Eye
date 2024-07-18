@@ -74,7 +74,7 @@ welcome to Ghost Eye is designed for system administrators and cybersecurity pro
 ## Installation
 Get started with Ghost Eye by following these steps:
 ```sh
-git clone https://github.com/yourusername/Ghost-Eye.git
+git clone https://github.com/0Xdarkday/Ghost-Eye.git
 cd Ghost-Eye
 ```
 ## configuration
