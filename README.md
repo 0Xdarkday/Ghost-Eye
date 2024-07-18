@@ -69,23 +69,70 @@ welcome to Ghost Eye is designed for system administrators and cybersecurity pro
   
 - Then Replace your bot token and chat ID within the Config.ps1 file
 
-## Telegrm Dashboard
-![Telegrm Dashboard](images/Dashbord.png)
-## Installation
-Get started with Ghost Eye by following these steps:
-```sh
-git clone https://github.com/0Xdarkday/Ghost-Eye.git
-cd Ghost-Eye
+  ## Create a Telegram Bot
+- Open Telegram and search for BotFather. This is the official bot for creating and managing Telegram bots.
+- Start a chat with BotFather and send the command /start
+- end the command /newbot to create a new bot.
+- Follow the instructions provided by BotFather to choose a name and username for your bot. The username must end with "bot" (e.g., MyAwesomeBot).
+- BotFather will then provide you with a bot token. This token is used to authenticate your bot with the Telegram API.
+   - **Obtain Your Chat ID**
+   - Send a message in the yourbot chat to initiate the interaction with the bot.
+   - Use the following URL to get updates from the bot
+     ```sh
+     https://api.telegram.org/bot<YourBotToken>/getUpdates
+     ```
+     - Replace <YourBotToken> with the token provided by BotFather.
+     - Open the URL in your web browser. You should see a JSON response containing details about the recent messages. Look for the chat object within the message array, which contains the id field. This id is your            chat ID
+       Example of JSON Response
+       ```sh
+       {
+   "ok": true,
+   "result": [
+      {
+       "update_id": 123456789,
+         "message": {
+            "message_id": 1,
+            "from": {
+               "id": 987654321,
+               "is_bot": false,
+               "first_name": "Your",
+               "last_name": "Name",
+               "username": "yourusername",
+               "language_code": "en"
+            },
+            "chat": {
+               "id": -123456789,
+               "title": "Your Group Name",
+               "type": "group"
+            },
+            "date": 1598765432,
+            "text": "Test message"
+         }
+      }
+   ]
+}
 ```
+     - Using the Bot Token and Chat ID
+     - Bot Token: This is used in the API requests to authenticate your bot.
+     - Chat ID: This is used to specify the target chat (group or individual) where messages will be sent.
 ## configuration
-```
+```sh
 #shensure that path is defined in your windows for firewall log  
 $logFile = "C:\Windows\System32\LogFiles\Firewall\pfirewall.log"
 
 # replace the botToken & chatID  with yours
 $botToken = ""
 $chatID = ""
+```
+## Telegrm Dashboard
+![Telegrm Dashboard](images/Dashbord.png)
 
+## Installation
+Get started with Ghost Eye by following these steps:
+```sh
+git clone https://github.com/0Xdarkday/Ghost-Eye.git
+cd Ghost-Eye
+```
 ## Example usages
   ```sh
 ./ghots-eye.ps1
