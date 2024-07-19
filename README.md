@@ -98,6 +98,9 @@ $logFile = "C:\Windows\System32\LogFiles\Firewall\pfirewall.log"
 $botToken = ""
 $chatID = ""
 ```
+## OUTPUT
+![output](images/output.png)
+
 ## Telegrm Dashboard
 ![Telegrm Dashboard](images/Dashbord.png)
 
