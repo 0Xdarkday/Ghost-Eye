@@ -1,5 +1,5 @@
 # GHOST EYE - Advanced investigator Tool
-![GHOST EYE ](images/logo.jpg)
+ ![GHOST EYE ](images/logo.jpg)
 ## Introduction
 
 welcome to Ghost Eye is designed for system administrators and cybersecurity professionals to monitor and investigate system events, manage registry changes, and send notifications. The tool includes various scripts and modules to gather system information, track specific events, send alerts via Telegram, and convert investigation results into CSV files for easy analysis. it collects and processes various system data useful for digital forensics and incident response (DFIR).
