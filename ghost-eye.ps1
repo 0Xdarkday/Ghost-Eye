@@ -3,7 +3,7 @@ Import-Module -Name "$PSScriptRoot\Telegram.psm1"
 Import-Module -Name "$PSScriptRoot\LogProcessing.psm1"
 Import-Module -Name "$PSScriptRoot\RegistryMonitoring.psm1"
 Import-Module -Name "$PSScriptRoot\investigate.psm1"
-
+Import-Module -Name "$PSScriptRoot\zip.psm1"
 # Load configuration
 . "$PSScriptRoot\config.ps1"
 
@@ -66,7 +66,7 @@ $CSVOutputFolder = "$FolderCreation\CSV Results (SIEM Import Data)"
 mkdir -Force $CSVOutputFolder | Out-Null
 Write-Host "SIEM Export Output directory created: $CSVOutputFolder..."
 
- 
+ # Function to get the current user's SID
 function Get-CurrentUserSid {
     $currentUser = [System.Security.Principal.WindowsIdentity]::GetCurrent()
     return $currentUser.User.Value
@@ -75,7 +75,7 @@ function Get-CurrentUserSid {
 # Get the current user's SID
 $UserSid = Get-CurrentUserSid
 
-
+# Execute Functions
 Get-IPInfo -FolderCreation $FolderCreation -CSVOutputFolder $CSVOutputFolder
 Get-ShadowCopies -FolderCreation $FolderCreation -CSVOutputFolder $CSVOutputFolder
 Get-OpenConnections -FolderCreation $FolderCreation -CSVOutputFolder $CSVOutputFolder
@@ -98,6 +98,9 @@ Get-RunningServices -FolderCreation $FolderCrea -CSVOutputFolder $CSVOutputFolde
 Get-ScheduledTasks -FolderCreation $FolderCrea -CSVOutputFolder $CSVOutputFolder
 Get-ScheduledTasksRunInfo -FolderCreation $FolderCrea -CSVOutputFolder $CSVOutputFolder
 Get-ConnectedDevices -FolderCreation $FolderCrea -CSVOutputFolder $CSVOutputFolder
+Get-RecentFiles -FolderCreation $FolderCreation -CSVOutputFolder $CSVOutputFolder -days 7
+Get-InstalledSoftware -FolderCreation $FolderCreation -CSVOutputFolder $CSVOutputFolder
+Get-SystemInfo -FolderCreation $FolderCreation -CSVOutputFolder $CSVOutputFolder
 #Get-ChromiumFiles -Username "UserName" -FolderCreation $FolderCrea
 #Get-SecurityEventCount -FolderCreation $FolderCreation -CSVOutputFolder $CSVOutputFolder -sw 3
 #Get-SecurityEvents -FolderCreation $FolderCreation -CSVOutputFolder $CSVOutputFolder -sw 3
@@ -105,3 +108,9 @@ Get-ConnectedDevices -FolderCreation $FolderCrea -CSVOutputFolder $CSVOutputFold
 Write-Host "Sending alerts to Telegram..."
 # Send completion alert to Telegram
 Send-TelegramMessage -BotToken $botToken -ChatID $chatID -Message "Data collection and monitoring setup completed on $env:COMPUTERNAME."
+# Create zip file of the extracted data
+$ZipFilePath = "$CurrentPath\DFIR-$env:computername-$ExecutionTime.zip"
+
+Compress-ExtractedData -SourceFolder $FolderCreation -ZipFilePath $ZipFilePath
+# Send the zip file to Telegram
+Send-TelegramFile -botToken $botToken -chatID $chatID -filePath $ZipFilePath
