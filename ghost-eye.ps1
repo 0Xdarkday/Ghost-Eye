@@ -42,14 +42,7 @@ if (Test-Path $logFile) {
 } else {
     Write-Error "Log file not found: $logFile"
 }
-
-# Define the number of iterations and interval
-$iterations = 1
-$interval = 1
-
-# Run Track-SuccessfulLogins
-Track-SuccessfulLogins -botToken $botToken -chatID $chatID -iterations $iterations -interval $interval
-Start-RegistryMonitor -botToken $botToken -chatID $chatID -keyPath "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" 
+ 
 
 # Creating output directory
 Write-Host "Creating output directory..."
@@ -114,3 +107,11 @@ $ZipFilePath = "$CurrentPath\DFIR-$env:computername-$ExecutionTime.zip"
 Compress-ExtractedData -SourceFolder $FolderCreation -ZipFilePath $ZipFilePath
 # Send the zip file to Telegram
 Send-TelegramFile -botToken $botToken -chatID $chatID -filePath $ZipFilePath
+
+# Define the number of iterations and interval
+$iterations = 1
+$interval = 1
+
+# Run Track-SuccessfulLogins
+Track-SuccessfulLogins -botToken $botToken -chatID $chatID -iterations $iterations -interval $interval
+Start-RegistryMonitor -botToken $botToken -chatID $chatID -keyPath "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
