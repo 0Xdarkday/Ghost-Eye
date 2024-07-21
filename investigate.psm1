@@ -1,3 +1,4 @@
+# Investigate.psm1
 function Get-IPInfo {
     param (
         [string]$FolderCreation,
@@ -455,7 +456,43 @@ function Get-ChromiumFiles {
     }
 }
 
+function Get-RecentFiles {
+    param (
+        [string]$FolderCreation,
+        [string]$CSVOutputFolder,
+        [int]$days = 7
+    )
+    Write-Host "Collecting recently modified files..."
+    $cutoffDate = (Get-Date).AddDays(-$days)
+    $recentFilesOutput = "$FolderCreation\recent_files.txt"
+    Get-ChildItem -Path "C:\" -Recurse | Where-Object { $_.LastWriteTime -gt $cutoffDate } | Out-File -Force -FilePath $recentFilesOutput
+    $CSVExportLocation = "$CSVOutputFolder\recent_files.csv"
+    Get-ChildItem -Path "C:\" -Recurse | Where-Object { $_.LastWriteTime -gt $cutoffDate } | Select-Object FullName, LastWriteTime | ConvertTo-Csv -NoTypeInformation | Out-File -FilePath $CSVExportLocation -Encoding UTF8
+}
 
+function Get-InstalledSoftware {
+    param (
+        [string]$FolderCreation,
+        [string]$CSVOutputFolder
+    )
+    Write-Host "Collecting installed software information..."
+    $installedSoftwareOutput = "$FolderCreation\installed_software.txt"
+    Get-ItemProperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*" | Select-Object DisplayName, DisplayVersion, Publisher, InstallDate | Out-File -Force -FilePath $installedSoftwareOutput
+    $CSVExportLocation = "$CSVOutputFolder\installed_software.csv"
+    Get-ItemProperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*" | Select-Object DisplayName, DisplayVersion, Publisher, InstallDate | ConvertTo-Csv -NoTypeInformation | Out-File -FilePath $CSVExportLocation -Encoding UTF8
+}
+
+function Get-SystemInfo {
+    param (
+        [string]$FolderCreation,
+        [string]$CSVOutputFolder
+    )
+    Write-Host "Collecting system information..."
+    $systemInfoOutput = "$FolderCreation\system_info.txt"
+    Get-WmiObject -Class Win32_ComputerSystem | Select-Object Name, Manufacturer, Model, SystemType, Domain, TotalPhysicalMemory | Out-File -Force -FilePath $systemInfoOutput
+    $CSVExportLocation = "$CSVOutputFolder\system_info.csv"
+    Get-WmiObject -Class Win32_ComputerSystem | Select-Object Name, Manufacturer, Model, SystemType, Domain, TotalPhysicalMemory | ConvertTo-Csv -NoTypeInformation | Out-File -FilePath $CSVExportLocation -Encoding UTF8
+}
 
 function Send-CompletionMessage {
     param (
@@ -468,4 +505,4 @@ function Send-CompletionMessage {
     Send-TelegramMessage -BotToken $BotToken -ChatID $ChatID -Message $Message
 }
 
-Export-ModuleMember -Function Get-IPInfo, Get-ShadowCopies, Get-OpenConnections, Get-AutoRunInfo, Get-InstalledDrivers, Get-ActiveUsers, Get-LocalUsers, Get-ActiveProcesses, Get-SecurityEventCount, Get-SecurityEvents , Send-CompletionMessage , Get-EventViewerFiles,Get-OfficeConnections,Get-NetworkShares,Get-SMBShares,Get-RDPSessions,Get-RemotelyOpenedFiles,Get-DNSCache,Get-PowershellHistoryCurrentUser,Get-PowershellConsoleHistory-AllUsers,Get-RecentlyInstalledSoftwareEventLogs,Get-RunningServices,Get-ScheduledTasks,Get-ScheduledTasksRunInfo,Get-ConnectedDevices
+Export-ModuleMember -Function Get-IPInfo, Get-ShadowCopies, Get-OpenConnections, Get-AutoRunInfo, Get-InstalledDrivers, Get-ActiveUsers, Get-LocalUsers, Get-ActiveProcesses, Get-SecurityEventCount, Get-SecurityEvents , Send-CompletionMessage , Get-EventViewerFiles,Get-OfficeConnections,Get-NetworkShares,Get-SMBShares,Get-RDPSessions,Get-RemotelyOpenedFiles,Get-DNSCache,Get-PowershellHistoryCurrentUser,Get-PowershellConsoleHistory-AllUsers,Get-RecentlyInstalledSoftwareEventLogs,Get-RunningServices,Get-ScheduledTasks,Get-ScheduledTasksRunInfo,Get-ConnectedDevices,Get-RecentFiles, Get-InstalledSoftware, Get-SystemInfo
